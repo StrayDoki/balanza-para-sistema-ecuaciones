@@ -17,7 +17,7 @@ function crearBalanza(x,y,tamaño,grosor, color, borde)
   function balanza.getA()
     local punto = {
       x = balanza.x - (balanza.tamaño/2 - balanza.grosor/2)*math.cos(balanza.angulo),
-      y = balanza.y - balanza.tamaño/2 + balanza.grosor/2 - (balanza.tamaño/2 - balanza.grosor/2)*math.sin(balanza.angulo)
+      y = balanza.y - balanza.tamaño/2 + balanza.grosor/2 - (balanza.tamaño/2 - balanza.grosor/2)*math.sin(balanza.angulo) + balanza.tamaño/2
     }
     return punto
   end
@@ -25,9 +25,27 @@ function crearBalanza(x,y,tamaño,grosor, color, borde)
   function balanza.getB()
     local punto = {
       x = balanza.x + (balanza.tamaño/2 - balanza.grosor/2)*math.cos(angulo),
-      y = balanza.y - balanza.tamaño/2 + balanza.grosor/2 + (balanza.tamaño/2 - balanza.grosor/2)*math.sin(angulo)
+      y = balanza.y - balanza.tamaño/2 + balanza.grosor/2 + (balanza.tamaño/2 - balanza.grosor/2)*math.sin(balanza.angulo) + balanza.tamaño/2
     }
     return punto
+  end
+
+  function balanza.buscar(bola)
+    local ubicacion = "A"
+
+    for i=1, #balanza.bolasA do
+      if bola == balanza.bolasA[i] then
+        ubicacion = "A"
+      end
+    end
+
+    for i=1, #balanza.bolasB do
+      if bola == balanza.bolasB[i] then
+        ubicacion = "B"
+      end
+    end
+
+    return ubicacion
   end
 
   function balanza.actualizar()
@@ -50,6 +68,7 @@ function crearBalanza(x,y,tamaño,grosor, color, borde)
   end
 
   function balanza.update(dt)
+    print(balanza.estado)
     if balanza.estado == "reposo" then
       balanza.angulo = 0
     elseif balanza.estado == "reposoA" then

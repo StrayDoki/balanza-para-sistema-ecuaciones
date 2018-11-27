@@ -2,7 +2,7 @@ function crearTexto(_texto, x, y, size, color)
   local texto = {_texto, x, y, size}
 
   function texto.draw ()
-    local font = love.graphics.newFont(size)
+    local font = love.graphics.newFont(size or 24)
     local width = font:getWidth(texto)
     local height = font:getHeight(texto)
     font:setFilter('nearest', 'nearest')

@@ -17,18 +17,23 @@ function crearBola(x,y,radio,color,borde,peso)
     }
   }
 
-  function bola.update(dt)
+  function bola.update(dt,balanzas)
     if bola.estado=="reposo" then
       bola.x=bola.basex
       bola.y=bola.basey
     elseif bola.estado=="seguir" then
       bola.x=love.mouse.getX() + bola.offset.x
       bola.y=love.mouse.getY() + bola.offset.y
+    else
+      if bola.estado.plato == "A" then
+        bola.x=balanzas[bola.estado.balanza].getA().x
+        bola.y=balanzas[bola.estado.balanza].getA().y
+      end
     end
   end
 
   function bola.draw()
-    dibujarCirculo(bola.x,bola.y,bola.radio,bola.color,bola.borde,20,bola.peso,20,{0,0,0,1))
+    dibujarCirculo(bola.x,bola.y,bola.radio,bola.color,bola.borde,bola.peso,bola.radio*1.3,{0,0,0,1})
   end
 
   function bola.isSelected(x,y)
@@ -50,12 +55,6 @@ function crearBola(x,y,radio,color,borde,peso)
         y=bola.y - y
       }
       bola.estado = "seguir"
-    end
-  end
-
-  function bola.mousereleased(x,y)
-    if bola.isSelected(x,y)==true then
-      bola.estado = "reposo"
     end
   end
 

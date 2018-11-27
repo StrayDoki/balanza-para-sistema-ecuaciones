@@ -33,11 +33,15 @@ function dibujarCirculo(x,y,radio, color , borde,texto,size,textoColor)
     y,
     radio
   )
-  dibujarTexto(
-    texto,
-    x,
-    y
-  )
+  if texto ~= nil then
+    dibujarTexto(
+      texto,
+      x,
+      y,
+      size,
+      textoColor
+    )
+  end
 end
 
 function dibujarCajaRedonda(x,y,width,height,radio,color, borde)
