@@ -2,10 +2,11 @@ require('clases/texto')
 
 function dibujarCaja(x,y,width,height,color,texto,size,textoColor,borde,bordeColor)
   local borde = borde or 0
-  love.graphics.setColor(bordeColor or {0,0,0,1})
-  love.graphics.rectangle("fill",x,y,width,height)
   love.graphics.setColor(color or {1,1,1,1})
-  love.graphics.rectangle("fill",x + borde,y + borde,width - borde *2,height-borde*2)
+  love.graphics.rectangle("fill",x,y,width,height)
+  love.graphics.setColor(bordeColor or color)
+  love.graphics.setLineWidth(borde or 3)
+  love.graphics.rectangle("line",x,y,width,height)
   if texto ~= nil then
     dibujarTexto(
       texto,
@@ -86,12 +87,13 @@ function crearBoton(x,y,width,height,color,texto,size,textoColor,borde,bordeColo
   end
 
   function boton.estaSeleccionado(curX, curY)
-    return
+    return (
       curX > x and
       curX < x + width and
       curY > y and
       curY < y + height
-    end
+    )
+  end
 
   function boton.update(curX, curY)
     if boton.estaSeleccionado(curX, curY)

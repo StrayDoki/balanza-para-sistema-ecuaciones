@@ -1,4 +1,4 @@
-require('clases/caja')
+require('clases/formas')
 
 function crearBola(x,y,radio,color,borde,peso)
   local bola = {

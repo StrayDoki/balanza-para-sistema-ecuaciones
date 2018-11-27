@@ -1,10 +1,11 @@
-require('pantallas/balanzas')
+require('pantallas/balanzaIgualdad')
+require('pantallas/ordenIgualdad')
 require('clases/texto')
-require('clases/caja')
+require('clases/formas')
 
 menu = {}
 
-local cadena = {
+local cadenas = {
   titulo = [[ELIGE UNA OPCIÓN]],
 }
 
@@ -19,15 +20,17 @@ local cfg = {
 }
 
 local opciones = {
-  {"Las balanzas", balanzas},
-  {"Las balanzas", balan},
-  {"Las", balanzas},
-  {"Las balanzas", balanzas}
+  {"Las balanzas", balanzaIgualdad},
+  {"El Orden", ordenIgualdad},
+  {"Las", no},
+  {"Las balanzas", no}
 }
 
-local botones = {}
+local botones
 
 function menu.load()
+  botones = {}
+
   love.graphics.setBackgroundColor(cfg.background)
 
   cfg.filas = math.ceil(#opciones / cfg.columnas)
@@ -51,7 +54,7 @@ end
 
 function menu.draw()
   dibujarTexto(
-    cadena.titulo,
+    cadenas.titulo,
     love.graphics.getWidth()/2,
     cfg.alturaTitulo/2,
     cfg.tamañoTitulo,

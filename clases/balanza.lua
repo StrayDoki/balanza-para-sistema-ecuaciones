@@ -1,4 +1,4 @@
-require('clases/caja')
+require('clases/formas')
 
 function crearBalanza(x,y,tamaño,grosor, color, borde)
   local balanza = {
@@ -31,7 +31,6 @@ function crearBalanza(x,y,tamaño,grosor, color, borde)
   end
 
   function balanza.add(bola, id, plato)
-    print(balanza.buscar(id))
     if balanza.buscar(id) == "NO" then
       if plato == "A" then
         balanza.bolasA[#balanza.bolasA+1] = {
