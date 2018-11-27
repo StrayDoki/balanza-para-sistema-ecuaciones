@@ -11,29 +11,12 @@ function crearBola(x,y,radio,color,borde,peso)
     borde=borde,
     peso=peso or 1,
     estado="reposo",
-    offset = {
-      x=0,
-      y=0
-    }
+    estatico=false,
+    hidden = nil
   }
 
-  function bola.update(dt,balanzas)
-    if bola.estado=="reposo" then
-      bola.x=bola.basex
-      bola.y=bola.basey
-    elseif bola.estado=="seguir" then
-      bola.x=love.mouse.getX() + bola.offset.x
-      bola.y=love.mouse.getY() + bola.offset.y
-    else
-      if bola.estado.plato == "A" then
-        bola.x=balanzas[bola.estado.balanza].getA().x
-        bola.y=balanzas[bola.estado.balanza].getA().y
-      end
-    end
-  end
-
   function bola.draw()
-    dibujarCirculo(bola.x,bola.y,bola.radio,bola.color,bola.borde,bola.peso,bola.radio*1.3,{0,0,0,1})
+    dibujarCirculo(bola.x,bola.y,bola.radio,bola.color,bola.borde,bola.hidden or bola.peso,bola.radio*1.3,{0,0,0,1})
   end
 
   function bola.isSelected(x,y)
@@ -46,16 +29,6 @@ function crearBola(x,y,radio,color,borde,peso)
     end 
 
     return isSelected
-  end
-
-  function bola.mousepressed(x,y)
-    if bola.isSelected(x,y)==true then
-      bola.offset = {
-        x=bola.x - x,
-        y=bola.y - y
-      }
-      bola.estado = "seguir"
-    end
   end
 
   return bola

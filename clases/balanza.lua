@@ -24,24 +24,69 @@ function crearBalanza(x,y,tamaño,grosor, color, borde)
 
   function balanza.getB()
     local punto = {
-      x = balanza.x + (balanza.tamaño/2 - balanza.grosor/2)*math.cos(angulo),
+      x = balanza.x + (balanza.tamaño/2 - balanza.grosor/2)*math.cos(balanza.angulo),
       y = balanza.y - balanza.tamaño/2 + balanza.grosor/2 + (balanza.tamaño/2 - balanza.grosor/2)*math.sin(balanza.angulo) + balanza.tamaño/2
     }
     return punto
   end
 
-  function balanza.buscar(bola)
-    local ubicacion = "A"
+  function balanza.add(bola, id, plato)
+    print(balanza.buscar(id))
+    if balanza.buscar(id) == "NO" then
+      if plato == "A" then
+        balanza.bolasA[#balanza.bolasA+1] = {
+          id = id,
+          peso = bola.peso
+        }
+      else
+        balanza.bolasB[#balanza.bolasB+1] = {
+          id = id,
+          peso = bola.peso
+        }
+      end
+    end
+  end
+
+  function balanza.remove(id, plato)
+    if plato == "A" then
+      for i=1, #balanza.bolasA do
+        if balanza.bolasA[i].id == id then
+          for j=#balanza.bolasA, i + 1, -1 do
+            balanza.bolasA[j-1] = balanza.bolasA[j]
+          end
+        end
+      end
+      balanza.bolasA[#balanza.bolasA] = nil
+    elseif plato == "B" then
+      for i=1, #balanza.bolasB do
+        if balanza.bolasB[i].id == id then
+          for j=#balanza.bolasB, i + 1, -1 do
+            balanza.bolasB[j-1] = balanza.bolasB[j]
+          end
+        end
+      end
+      balanza.bolasB[#balanza.bolasB] = nil
+    end
+  end
+
+  function balanza.buscar(id, conf)
+    local ubicacion = "NO"
 
     for i=1, #balanza.bolasA do
-      if bola == balanza.bolasA[i] then
+      if id == balanza.bolasA[i].id then
         ubicacion = "A"
+        if conf == "lugar" then
+          ubicacion = i
+        end
       end
     end
 
     for i=1, #balanza.bolasB do
-      if bola == balanza.bolasB[i] then
+      if id == balanza.bolasB[i].id then
         ubicacion = "B"
+        if conf == "lugar" then
+          ubicacion = i
+        end
       end
     end
 
@@ -68,7 +113,7 @@ function crearBalanza(x,y,tamaño,grosor, color, borde)
   end
 
   function balanza.update(dt)
-    print(balanza.estado)
+    
     if balanza.estado == "reposo" then
       balanza.angulo = 0
     elseif balanza.estado == "reposoA" then
