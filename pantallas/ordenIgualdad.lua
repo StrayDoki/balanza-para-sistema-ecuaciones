@@ -42,9 +42,19 @@ local cfg = {
   }
 }
 
+local respuesta = {
+  {2,3},
+  {6},
+  {4}
+}
+
+local bloques
 local fichas
 local triangulos
 
+-------------
+-- L O A D --
+-------------
 function ordenIgualdad.load()
   --CREAR BOTON
   boton_atras = crearBoton(
@@ -59,6 +69,14 @@ function ordenIgualdad.load()
     cfg.boton.borde,
     cfg.boton.color_borde
   )
+
+  -- CREAR BLOQUES
+  bloques = {}
+  local inicioBloque = (
+    love.graphics.getWidth()/2
+    - cfg.bloque_ancho*cfg.num_fichas/2
+    - cfg.separacion*(cfg.num_fichas-1)/2
+  ) 
 
   --CREAR FICHAS
   fichas = {}
@@ -81,7 +99,10 @@ function ordenIgualdad.load()
     fichas[i+cfg.num_fichas] = {
       x=inicioFicha + cfg.bloque_ancho/2 + (i-1)*(cfg.bloque_ancho+cfg.separacion),
       y=cfg.fila_3,
-      texto = cadenas.fichas[i+cfg.num_fichas]
+      baseX=inicioFicha + cfg.bloque_ancho/2 + (i-1)*(cfg.bloque_ancho+cfg.separacion),
+      baseY=cfg.fila_3,
+      texto = cadenas.fichas[i+cfg.num_fichas],
+      estado = "reposo"
     }
   end
 
@@ -96,6 +117,9 @@ function ordenIgualdad.load()
   end
 end  
 
+-----------------
+-- U P D A T E --
+-----------------
 function ordenIgualdad.update()
   --FICHAS UPDATE
   for i=1, #fichas do
@@ -115,6 +139,9 @@ function ordenIgualdad.update()
   )
 end
 
+-------------
+-- D R A W --
+-------------
 function ordenIgualdad.draw()
   --DIBUJAR TITULO
   dibujarTexto(
@@ -170,7 +197,11 @@ function ordenIgualdad.draw()
   boton_atras.draw()
 end
 
+-------------------
+-- P R E S S E D --
+-------------------
 function ordenIgualdad.mousepressed(x,y)
+  -- SI LA FICHA ESTA SELECCIONADA
   for i=1, #fichas do
     if fichaEstaSeleccionada(x,y,fichas[i].x,fichas[i].y,cfg.bloque_ancho,cfg.bloque_alto) then
       fichas[i].estado = "seguir"
@@ -179,6 +210,25 @@ function ordenIgualdad.mousepressed(x,y)
 
   if boton_atras.estaSeleccionado(x,y) then
     cambiarPantalla(menu)
+  end
+end
+
+---------------------
+-- R E L E A S E D --
+---------------------
+function ordenIgualdad.mousereleased(x,y)
+  for i=1, #fichas do
+    for j=1, #respuesta do
+      for k=1, #respuesta[j] do
+        if fichas.x == 
+      end
+    end
+  end  
+
+  for i=1, #fichas do
+    if fichas[i].estado == "seguir" then
+      fichas[i].estado = "reposo"
+    end
   end
 end
 
