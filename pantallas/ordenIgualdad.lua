@@ -74,9 +74,15 @@ function ordenIgualdad.load()
   bloques = {}
   local inicioBloque = (
     love.graphics.getWidth()/2
-    - cfg.bloque_ancho*cfg.num_fichas/2
-    - cfg.separacion*(cfg.num_fichas-1)/2
-  ) 
+    - cfg.bloque_ancho*cfg.num_bloques/2
+    - cfg.separacion*(cfg.num_bloques-1)/2
+  )
+  for i=1, cfg.num_bloques do
+    bloques[i] = {
+      x=inicioBloque + cfg.bloque_ancho/2 + (i-1)*(cfg.bloque_ancho+cfg.separacion),
+      y=cfg.fila_1,
+    }
+  end
 
   --CREAR FICHAS
   fichas = {}
@@ -92,7 +98,8 @@ function ordenIgualdad.load()
       baseX = inicioFicha + cfg.bloque_ancho/2 + (i-1)*(cfg.bloque_ancho+cfg.separacion),
       baseY = cfg.fila_2,
       texto = cadenas.fichas[i],
-      estado = "reposo"
+      estado = "reposo",
+      en_bloque 
     }
   end
   for i=1, cfg.num_fichas do
@@ -129,6 +136,9 @@ function ordenIgualdad.update()
     elseif fichas[i].estado == "seguir" then
       fichas[i].x = love.mouse.getX()
       fichas[i].y = love.mouse.getY()
+    elseif fichas[i].estado == "correcto" then
+      fichas[i].x = bloques[fichas[i].en_bloque].x
+      fichas[i].y = bloques[fichas[i].en_bloque].y
     end
   end
   
@@ -152,20 +162,6 @@ function ordenIgualdad.draw()
     cfg.textoColor
   )
 
-  --DIBUJAR BLOQUES
-  for i=1, cfg.num_bloques do
-    dibujarCaja(
-      love.graphics.getWidth()/2 - cfg.bloque_ancho*cfg.num_bloques/2 - cfg.separacion*(cfg.num_bloques-1)/2 + (i - 1)*(cfg.bloque_ancho + cfg.separacion) ,
-      cfg.fila_1 - cfg.bloque_alto/2,
-      cfg.bloque_ancho,
-      cfg.bloque_alto,
-      cfg.bloque_color,
-      nil,nil,nil,
-      cfg.bloque_borde,
-      cfg.bloque_borde_color
-    )
-  end
-
   --DIBUJAR FICHAS
   for i=1, #fichas do
     dibujarCaja (
@@ -176,6 +172,20 @@ function ordenIgualdad.draw()
       cfg.ficha_color,
       fichas[i].texto,
       cfg.bloque_alto*0.3
+    )
+  end
+
+  --DIBUJAR BLOQUES
+  for i=1, #bloques do
+    dibujarCaja(
+      bloques[i].x - cfg.bloque_ancho/2,
+      bloques[i].y - cfg.bloque_alto/2,
+      cfg.bloque_ancho,
+      cfg.bloque_alto,
+      {0,0,0,0},
+      nil,nil,nil,
+      cfg.bloque_borde,
+      cfg.bloque_borde_color
     )
   end
 
@@ -217,10 +227,16 @@ end
 -- R E L E A S E D --
 ---------------------
 function ordenIgualdad.mousereleased(x,y)
+  -- verifica si la ficha esta en el bloque correcto
   for i=1, #fichas do
-    for j=1, #respuesta do
-      for k=1, #respuesta[j] do
-        if fichas.x == 
+    for j=1, #bloques do
+      if math.abs(fichas[i].x - bloques[j].x)<20 and math.abs(fichas[i].y - bloques[j].y)<20 then
+        for k=1, #respuesta[j] do
+          if respuesta[j][k] == i then
+            fichas[i].estado = "correcto"
+            fichas[i].en_bloque = j
+          end
+        end     
       end
     end
   end  

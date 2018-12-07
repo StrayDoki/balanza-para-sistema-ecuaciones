@@ -83,15 +83,15 @@ function crearBoton(x,y,width,height,color,texto,size,textoColor,borde,bordeColo
   }
 
   function boton.draw()
-    dibujarCaja(x,y,width,height,color,texto,size,textoColor,borde,bordeColor)
+    dibujarCaja(boton.x,boton.y,width,height,color,texto,size,textoColor,borde,bordeColor)
   end
 
   function boton.estaSeleccionado(curX, curY)
     return (
-      curX > x and
-      curX < x + width and
-      curY > y and
-      curY < y + height
+      curX > boton.x and
+      curX < boton.x + width and
+      curY > boton.y and
+      curY < boton.y + height
     )
   end
 

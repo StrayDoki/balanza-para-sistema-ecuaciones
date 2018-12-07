@@ -1,5 +1,7 @@
 require('pantallas/balanzaIgualdad')
 require('pantallas/ordenIgualdad')
+require('pantallas/ejerciciosIgualdad')
+require('pantallas/problemasIgualdad')
 require('clases/texto')
 require('clases/formas')
 
@@ -22,8 +24,8 @@ local cfg = {
 local opciones = {
   {"Las balanzas", balanzaIgualdad},
   {"El Orden", ordenIgualdad},
-  {"Las", no},
-  {"Las balanzas", no}
+  {"Ejercicios", ejerciciosIgualdad},
+  {"Problemas", problemasIgualdad}
 }
 
 local botones
